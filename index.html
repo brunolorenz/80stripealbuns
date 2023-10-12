@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test Interface</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="stripe-albuns.js"></script> <!-- replace with your p5.js code file name -->
+</head>
+<body>
+    <input type="file" id="upload" accept="image/*">
+    <script>
+        document.getElementById('upload').addEventListener('change', (event) => {
+            let file = event.target.files[0];
+            let reader = new FileReader();
+
+            reader.onload = function() {
+                let dataURL = reader.result;
+                img = loadImage(dataURL);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
