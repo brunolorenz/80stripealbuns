@@ -3,23 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Test Interface</title>
+    <title>80'2 Stribe Albuns | An odd.experiment</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    <script src="stripealbuns.js"></script> <!-- replace with your p5.js code file name -->
+    <script src="stripealbuns.js"></script> <!-- Certifique-se de que este é o nome correto do seu arquivo p5.js -->
 </head>
 <body>
     <input type="file" id="upload" accept="image/*">
+    <button id="loadImage">Carregar Imagem</button>
+    <button id="startProcessing" disabled>Iniciar</button>
+
     <script>
-        document.getElementById('upload').addEventListener('change', (event) => {
-            let file = event.target.files[0];
-            let reader = new FileReader();
+        let imageLoaded = false;
 
-            reader.onload = function() {
-                let dataURL = reader.result;
-                img = loadImage(dataURL);
-            };
+        document.getElementById('loadImage').addEventListener('click', function() {
+            let fileInput = document.getElementById('upload');
+            let file = fileInput.files[0];
+            
+            if (file) {
+                let reader = new FileReader();
 
-            reader.readAsDataURL(file);
+                reader.onload = function() {
+                    let dataURL = reader.result;
+                    img = loadImage(dataURL, function() {
+                        imageLoaded = true;
+                        document.getElementById('startProcessing').disabled = false;
+                    });
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                alert("Por favor, selecione uma imagem primeiro.");
+            }
+        });
+
+        document.getElementById('startProcessing').addEventListener('click', function() {
+            if (imageLoaded) {
+                loop();  // Inicia o loop de desenho p5.js se não estiver rodando.
+            }
         });
     </script>
 </body>
